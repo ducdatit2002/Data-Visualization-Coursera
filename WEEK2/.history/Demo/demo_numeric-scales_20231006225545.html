@@ -1,0 +1,30 @@
+<html>
+  <head> </head>
+  <body>
+    <div class="container"></div>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script>
+    const KG_PER_POUND = 0.45;
+    const METER_PER_INCH = 0.0254;
+    let container = d3.select("#container");
+    d3.csv("data.csv").then(showData);
+
+    function write(text) {
+      container.append("div").text(text);
+    }
+
+    function showData(clients) {
+        let jany = container.selectAll("div")
+            .data(clients)
+        
+        join.enter()
+            .append("div")
+            .text(d => d.name)
+            .style("background-color", "blue")
+            .style("margin", "5px")
+            .style("color", "white")
+            .style("margin")
+    }
+  </script>
+</html>

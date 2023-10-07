@@ -1,0 +1,23 @@
+<html>
+  <head> </head>
+  <body>
+    <svg ></svg>
+  </body>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script>
+    let container = d3.select("#container");
+    d3.csv("data.csv").then(showData);
+
+    function showData(clients) {
+        let max = d3.max(clients, 
+            d => d.Weight)
+        let widthScale = d3.scaleLinear()
+            .range([0, 300])
+            .domain([0, max])
+        let join = container
+            .selectAll("rect")
+            .data(clients)
+    }
+  </script>
+</html>

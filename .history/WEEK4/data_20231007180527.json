@@ -1,0 +1,12 @@
+{
+    "nodes":[
+        {"id": "John"},
+        {"id": "Marcus"},
+        {"id": "Jane"},
+        {"id": "Clara"},
+        {"id": "Nice"}
+    ],
+    "links": [
+        {"source": }
+    ]
+}

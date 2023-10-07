@@ -1,0 +1,55 @@
+<head> </head>
+<body>
+  <div id="container"></div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script>
+  let container = d3.select("#container");
+  /** Sử dụng Filter và Sort
+    d3.csv("data.csv").then(function(data) {
+        data.sort((a,b) => {
+            return d3.ascending(a.Name, b.Name)
+        })
+        let filtered_data = data.filter(d => {
+            return d.Weight < 200
+        })
+        showData(filtered_data);
+    })
+    function showData(clients) {
+        for(let client of clients) {
+            write(client.Name+','+client.Weight);
+        }
+    }
+*/
+/**
+  const KG_PER_POUND = 0.45;
+  const METER_PER_INCH = 0.0254;
+  d3.csv("data.csv").then(dataLoaded);
+  function dataLoaded(clients) {
+    clients = clients.map((d) => {
+      d.BMI = getBMI(d);
+      return d;
+    });
+    showData(clients);
+  }
+  function getBMI(client) {
+    let weightInKg = client.Weight * KG_PER_POUND;
+    let heightInMeter = client.Height * METER_PER_INCH;
+    let BMI = weightInKg / heightInMeter / heightInMeter;
+    return BMI;
+  }
+  function showData(clients) {
+    for (let client of clients) {
+      write(client.Name + "," + client.BMI);
+    }
+    write("-------------");
+    let sum = clients.reduce((prev, curr) => {
+        return prev + curr.BMI
+    },0);
+    let mean = sum/clients.length;
+    write("mean: " + mean);
+  }
+  function write(text) {
+    container.append("div").text(text);
+  }
+</script>

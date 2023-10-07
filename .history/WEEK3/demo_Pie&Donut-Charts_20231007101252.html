@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <style>
+    </style>
+  </head>
+  <body>
+    <svg id="container" height="300" width="500">
+      <g id="body" style="transform: translate(50px, 0px)"></g>
+    </svg>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script>
+    let body = d3.select("#body");
+    d3.csv("data.csv").then(showData);
+
+    function showData(data) {
+        let bodyHeight = 200;
+        let bodyWidth = 400;
+
+        data = data.map(d => ({
+            country = 
+        }))
+
+
+    }
+  </script>
+</html>

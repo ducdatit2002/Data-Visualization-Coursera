@@ -1,0 +1,13 @@
+{
+    "name": "USA",
+    "children": [
+        {
+            "name": "New York",
+            "children": [{
+                "name": "Albany",
+                "sales": 5000
+            },
+        ]
+        }
+    ]
+}

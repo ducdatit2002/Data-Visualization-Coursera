@@ -1,0 +1,51 @@
+<html>
+  <head></head>
+  <body>
+    <svg id="container" height="300" width="500">
+      <g id="body" transform="translate(250, 150)"></g>
+    </svg>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script>
+    let body = d3.select("#body");
+
+    Promise.all([d3.csv("dataset.csv"), d3.json("countries.geojson")]).then(
+      showData
+    );
+
+    function showData(datasources) {
+      let mapInfo = datasources[1];
+      let data = datasources[0];
+
+      let dataIndex = {};
+      for (let c of data) {
+        let country = c.Country;
+        dataIndex[country] = c.Magnitude;
+      }
+
+      mapInfo.features = mapInfo.features.map((d) => {
+        let country = d.properties.name;
+        let magnitude = dataIndex[country];
+        d.properties.Magnitude = magnitude;
+        return d;
+      });
+      let maxEarthquake = d3.max(
+        mapInfo.features,
+        (d) => d.properties.Magnitude
+      );
+      let cScale = d3
+        .scaleLinear()
+        .domain([0, maxEarthquake])
+        .range(["white", "red"]);
+      let bodyHeight = 400;
+      let bodyWidth = 400;
+
+      var projection = d3
+        .geoMercator()
+        .scale(80)
+        .translate([bodyWidth / 2, bodyHeight / 2]);
+    
+    var path = 
+    }
+  </script>
+</html>

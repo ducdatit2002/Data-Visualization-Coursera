@@ -1,0 +1,29 @@
+<html>
+  <head></head>
+  <body>
+    <svg
+      id="container"
+      height="250"
+      width="350"
+      style="border: 1px solid black"
+    >
+      <g id="body" style="transform: translate(50px, 0px)"></g>
+      <g id="yAxis"></g>
+      <g id="xAxis"></g>
+    </svg>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script>
+    let body = d3.select("#body");
+    d3.csv("data.csv").then(showData);
+
+    function showData(clients) {
+      let max = d3.max(clients, (d) => d.Weight);
+      let scale = d3.scaleLinear().range([0, 200]).domain([0, max]);
+
+      let scalePosition = d3.scaleBand().range([0, 200])
+      scalePosition.padding(0.3)
+      
+    }
+  </script>
+</html>

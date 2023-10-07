@@ -1,0 +1,17 @@
+<html>
+  <head></head>
+  <body></body>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script>
+    d3.json("data.json").then(showData)
+    function showData(data) {
+        let bodyHeight = 400
+        let bodyWidth = 400
+        
+        let simulation = d3.forceSimulation()
+            .force("link", d3.forceLink().id(
+                    (d) => d.id))
+            .force("charge", d3.forceM)
+    }
+  </script>
+</html>

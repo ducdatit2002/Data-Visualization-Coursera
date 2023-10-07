@@ -1,0 +1,30 @@
+<html>
+  <head></head>
+  <body>
+    <svg id="container" height="300" width="500">
+      <g id="body" transform="translate(250, 150)"></g>
+    </svg>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script>
+    let body = d3.select("#body");
+    d3.json("countries.geojson").then(showData)
+
+    function showData(mapInfo) {
+        let bodyHeight = 400
+        let bodyWidth = 400
+        console.log(mapInfo);
+
+        let projection = d3.geoMercator()
+
+        let path = d3.geoPath()
+            .projection(projection)
+        
+        body.selectAll("path")
+            .data(mapInfo.features)
+            .enter().append("path")
+            .attr("d", d => path(d))
+            .
+    }
+  </script>
+</html>

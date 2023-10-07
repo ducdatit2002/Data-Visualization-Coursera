@@ -1,0 +1,65 @@
+<html>
+  <head></head>
+  <body>
+    <svg
+      id="container"
+      height="250"
+      width="350"
+      style="border: 1px solid black"
+    >
+      <g id="body" style="transform: translate(50px, 0px)"></g>
+      <g id="yAxis"></g>
+      <g id="xAxis"></g>
+    </svg>
+    <div id="details">
+      <div style="color: #999">Users Detail....</div>
+    </div>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script>
+    let body = d3.select("#body");
+    d3.csv("data.csv").then(showData);
+
+    function showData(clients) {
+      let max = d3.max(clients, (d) => d.Weight);
+      let scale = d3.scaleLinear().range([0, 200]).domain([0, max]);
+
+      let scalePosition = d3
+        .scaleBand()
+        .range([0, 200])
+        .domain(clients.map((d) => d.Name))
+        .padding(0.3);
+
+      let join = body.selectAll("rect").data(clients);
+
+      join
+        .enter()
+        .append("rect")
+        .style("fill", "blue")
+        .style("stroke", "white")
+        .attr("width", (d) => scale(d.Weight))
+        .attr("height", scalePosition.bandwidth())
+        .attr("y", (d) => scalePosition(d.Name))
+        .on("click", (d) => {
+          d3.select("#details").select("div").text(d.Name);
+        })
+        .on("mouseover", function() {
+          this.style.fill = "red";
+        })
+        .on("mouseout", function() {
+          this.style.fill = "blue";
+        })
+
+      let xAxis = d3
+        .axisBottom(scale)
+        .ticks(5)
+        .tickFormat((d) => d + "lb");
+      d3.select("#xAxis").attr("transform", "translate(50,200)").call(xAxis);
+
+      let yAxis = d3.axisLeft(scalePosition);
+      d3.select("#yAxis").attr("transform", "translate(50,0)").call(yAxis);
+
+      d3.select("")
+    }
+  </script>
+</html>

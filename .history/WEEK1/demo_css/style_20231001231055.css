@@ -1,0 +1,11 @@
+h1 {
+    color: red;
+}
+#window {
+    border: solid 1px greenyellow;
+    margin: 10px;
+    padding: 10px;
+}
+.highlight {
+    background-color: aquamarine;
+}

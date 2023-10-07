@@ -1,0 +1,60 @@
+<html>
+  <head></head>
+  <body>
+    
+    <p class="main-paragraph">Lorem ipsum dolor sit amet.</p>
+    <p>
+      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eius, facilis.
+    </p>
+    <button onclick="change1()">Change 1</button>
+    <button onclick="change2()">Change 2</button>
+    <button onclick="change3()">Change 3</button>
+    <button onclick="change4()">Change 4</button>
+    <button onclick="change('meomeo.jpeg')">Change meomeo</button>
+    <button onclick="change('download.jpeg')">Change doggy</button>
+    <div>
+        <img src="./download.jpeg" id="animalImg" alt="">
+    </div>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script>
+      function change1() {
+        let p = d3.select(".main-paragraph");
+        p.text = "Đạt nè";
+      }
+      function change2() {
+        d3.selectAll("p").text("New text2")
+      }
+      function change3() {
+        d3.select("p").html("<b>test</b>normal")
+      }
+      function change4() {
+        d3.select("p").text("<b>test</b>normal")
+      }
+      //add new item
+      let itemlist = d3.select("#item-list")
+      function count() {
+        itemlist.selectAll("li")
+        .size()
+      }
+      function change5() {
+        let c = count() + 1;
+        itemlist 
+            .append("li")
+            .text("Item"+c)
+      }
+      //Remove all item
+      function change6() {
+        itemlist.selectAll("li").remove()
+      }
+      //Remove last item
+      function change7() {
+        itemlist.select("li:last-child")
+            .remove()
+      }
+      //Change hình
+      function change(imgName) {
+        d3.select("#animal")
+      }
+    </script>
+  </body>
+</html>

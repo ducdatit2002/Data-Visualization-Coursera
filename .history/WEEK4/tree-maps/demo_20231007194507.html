@@ -1,0 +1,42 @@
+<html>
+  <head></head>
+  <body>
+    <svg id="container" height="300" width="500">
+      <g id="body" transform="translate(250, 150)"></g>
+    </svg>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script>
+    let body = d3.select("#body");
+    d3.json("data.json").then(showData);
+
+    function showData(data) {
+        let bodyHeight = 300;
+        let bodyWidth = 500;
+
+        let treemap = d3.treemap()
+            .size([bodyWidth, bodyHeight])
+            .paddingInner(2)
+        let root = d3.hierarchy(data)
+            .sum(d => d.sales)
+        
+        treemap(root)
+
+        let cScale = d3.scaleOrdinal(d3.schemeCategory10)
+
+        let cell = body.selectAll("g")
+            .data(root.leaves())
+            .enter()
+            .append("g")
+            .attr("transform", d => `translate(${d.x0},${d.y0})`)
+        
+        cell.append("rect")
+            .attr("width", d => d.x1 - d.x0)
+            .attr("height", d => d.y1 - d.y0)
+            .attr("fill", d => cScale(d.parent.data.name))
+        
+        cell.append("text")
+            .
+    }
+  </script>
+</html>
