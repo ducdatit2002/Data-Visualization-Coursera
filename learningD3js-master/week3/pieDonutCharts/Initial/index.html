@@ -1,0 +1,68 @@
+<html>
+
+<head>
+  <h1>Week 3: Pie and Donut Charts</h1>
+    <style>
+    svg{
+      border: 1px black solid;
+    }
+
+
+
+    </style>
+</head>
+
+<body>
+    <svg id="container" height="300" width="500">
+        <g id="body" transform="translate(150,150)"></g>
+
+
+    </svg>
+</body>
+<script src="d3.js"></script>
+<script>
+    let body = d3.select("#body")
+    d3.csv("data.csv").then(showData)
+
+    function showData(data) {
+        let bodyHeight = 200
+        let bodyWidth = 400
+
+        data = data.map(d => ({
+            country: d.country,
+            sales: +d.sales
+        }))
+        let pie = d3.pie() //similar to a
+                    .value(d => d.sales)// telling which values we want to use
+        /*pie(data) maps data points to angles*/
+        //console.log(pie(data))
+
+        let colorScale = d3.scaleOrdinal()
+                          .domain(data.map(d => d.country))
+                          .range(d3.schemeCategory10)//list of colors d3 provides
+        //console.log(colorScale("US")) shows color mapped to each country
+
+        //to draw information that pie returns
+        let arc = d3.arc() //creates arc object
+                    .outerRadius(bodyHeight/2)
+                    .innerRadius(0) //pieChart = 0 | donut = > 0
+
+
+        let g = body.selectAll(".arc")
+            .data(pie(data))//start and end angles
+            .enter()
+            .append("g")
+
+
+        g.append("path")
+          .attr("d",arc)
+          .attr("fill", d => colorScale(d.data.country))
+
+
+
+    }
+
+
+</script>
+
+</html>

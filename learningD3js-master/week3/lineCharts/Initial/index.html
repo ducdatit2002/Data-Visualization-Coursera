@@ -1,0 +1,79 @@
+<html>
+
+<head>
+  <h1>Week 3: Line Charts</h1>
+    <style>
+        .line {
+            fill: none;
+            stroke: blue
+        }
+        svg {
+          border: 1px black solid;
+        }
+    </style>
+</head>
+
+<body>
+    <svg id="container" height="300" width="500">
+        <g id="body" transform="translate(50,50)"></g>
+        <g id="xAxis"></g>
+        <g id="yAxis"></g>
+    </svg>
+</body>
+<script src="d3.js"></script>
+<script>
+    let body = d3.select("#body")
+    d3.csv("data.csv").then(showData)
+
+    function showData(data) {
+        let bodyHeight = 200
+        let bodyWidth = 400
+
+        // Convert date string to date object for JS to recognize it and order interval
+        data = data.map(d => ({
+          date: new Date(d.date), // creating new object Date to replace date
+          price: +d.price //+ ensures that price is always a number
+          // + forces JS to convert string to a number
+        }))
+
+        // define scales
+        let maxValue = d3.max(data, d => d.price)
+
+        let yScale = d3.scaleLinear()
+            .range([bodyHeight,0])
+            .domain([0, maxValue]);
+
+
+        let xScale = d3.scaleTime()
+                      .domain(d3.extent(data, d => d.date))
+                      .range([0,bodyWidth])
+
+        // draw scales to svg element
+        body.append("g")
+            .call(d3.axisLeft(yScale))
+
+        body.append("g")
+            .call(d3.axisBottom(xScale)
+                    .tickFormat(d3.timeFormat("%b")))
+            .attr("transform", "translate(0,"+bodyHeight+")")
+
+        // lineGenerator = maps line with data
+        valueLine = d3.line()
+                          .x(d => xScale(d.date))
+                          .y(d => yScale(d.price))
+                          .defined(d => !!d.price) //handle missing values
+                          //converts price to boolean value
+
+
+        //draw the line
+        body.append("path") // append type of svg element - path,rect,g,circle
+            .datum(data) // bind data - contains only one path for all the information
+            .attr("d", valueLine) //attr d draws the line
+            .attr("class","line") //setting class here to kodify css
+
+    }
+
+
+</script>
+
+</html>

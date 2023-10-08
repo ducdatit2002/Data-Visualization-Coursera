@@ -1,0 +1,43 @@
+<html>
+
+<head>
+  <h1>Week 2: Ordinal Scales</h1>
+</head>
+<body>
+    <svg id="container" height="300"></svg>
+</body>
+<script src="d3.js"></script>
+<script>
+    let container = d3.select("#container")
+    d3.csv("data.csv").then(showData)
+
+    function showData(clients) {
+
+        let max = d3.max(clients, d => d.Weight)
+        let widthScale = d3.scaleLinear()
+                           .range([0, 300])
+                           .domain([0, max])
+
+        let positionScale = d3.scaleBand()
+                              .range([0,200])
+                              .domain(clients.map(d => d.Name))
+                              .padding(0.3)
+
+        let join = container
+            .selectAll("rect")
+            .data(clients)
+
+            join.enter()
+                .append("rect")
+                .style("fill", "blue")
+                .style("width", d => widthScale(d.Weight))
+                .style("height", positionScale.bandwidth())
+                .style("y", d => positionScale(d.Name))
+
+
+    }
+
+
+</script>
+
+</html>

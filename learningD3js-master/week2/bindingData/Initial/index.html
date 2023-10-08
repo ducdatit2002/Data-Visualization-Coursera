@@ -1,0 +1,57 @@
+<html>
+
+<head>
+  <h1>Week 2: Binding Data</h1>
+</head>
+
+<body>
+    <button onclick="addNewClient()">Add</button>
+    <button onclick="removeClient()">Remove</button>
+    <div id="container"; style = "border: 1px solid black"></div>
+</body>
+<script src="d3.js"></script>
+<script>
+    let container = d3.select("#container")
+    /* Declaring clients array here... */
+    let clients = [{
+        Name: "Client0"
+    }]
+    let count = 1;
+
+
+    function addNewClient() {
+        clients.push({ Name: "Client" + count })
+        count += 1
+        showData(clients)
+    }
+
+    function removeClient() {
+        clients = clients.slice(0, -1)
+        count -= 1
+        showData(clients)
+    }
+
+    function showData(clients) {
+      let join = container
+                  .selectAll("div")
+                  .data(clients)
+                join
+                  .enter()
+                  .append("div")
+                  .text(d => d.Name + "- New")
+
+                join.text(d => d.Name + '- Updated')
+
+                join
+                .exit()
+                .remove()
+
+
+
+    }
+    showData(clients)
+
+
+</script>
+
+</html>

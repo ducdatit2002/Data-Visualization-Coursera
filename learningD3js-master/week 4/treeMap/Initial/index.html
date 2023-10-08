@@ -1,0 +1,70 @@
+<html>
+
+<head>
+  <h1>Week 4: Tree Map</h1>
+    <style>
+        svg {
+          border: 1px solid black
+        }
+        .links line {
+            stroke: black
+        }
+    </style>
+</head>
+
+<body>
+    <svg id="container" height="300" width="500">
+        <g id="body" transform="translate(0,0)"></g>
+    </svg>
+</body>
+<script src="d3.js"></script>
+<script>
+    let body = d3.select("#body")
+
+
+    d3.json("data.json").then(showData)
+
+    function showData(data) {
+        let bodyHeight = 300
+        let bodyWidth = 500
+
+        console.log(data)
+
+      // create treeMap element
+      let treemap = d3.treemap()
+                      .size([bodyWidth,bodyHeight]) // layout size
+                      .paddingInner(1)
+
+      // Data transformation
+      let root = d3.hierarchy(data) // add additonal info
+                    .sum(d => d.sales) // will produce data we would want to use
+
+      //console.log(root)
+      treemap(root)
+
+      let cScale = d3.scaleOrdinal(d3.schemeCategory10)
+
+      // create cells - each square where we will draw our data
+      let cell = body.selectAll("g")
+                      .data(root.leaves()) // last levels of our data i.e. cities
+                      .enter()
+                      .append("g")
+                      .attr("transform",d => `translate(${d.x0},${d.y0})`) // to start drawing from top left corner
+
+      cell.append("rect")
+          .attr('width',d => d.x1-d.x0)
+          .attr('height',d => d.y1-d.y0)
+          .attr("fill", d => cScale(d.parent.data.name))
+
+
+    cell.append("text")
+        .text(d => d.data.name)
+        .attr("alignment-baseline", "hanging") // to position them at the top
+        .attr("fill","white")
+
+    }
+
+
+</script>
+
+</html>

@@ -1,0 +1,25 @@
+<html>
+
+<head>
+  <h1>Hello!</h1>
+</head>
+
+<body>
+    <div id="container"></div>
+</body>
+<script src="d3.js"></script>
+<script>
+    let container = d3.select("#container")
+    d3.csv("data.csv")
+    .then(function (data){
+      /*write("Data is available")*/
+      for(let client of data){
+        write(client.Name)
+      }
+    }) /*Call back function*/
+    function write(text) {
+        container.append("div").text(text)
+    }
+</script>
+
+</html>

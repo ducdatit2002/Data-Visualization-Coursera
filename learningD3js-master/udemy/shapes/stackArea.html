@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stack Area</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+      <style>
+      .areaClass {
+          fill:cornflowerblue;
+      }
+
+      </style>
+  </head>
+  <body>
+      <script>
+      var data = [{year:2000, desktops:80, laptops:210, printers:50, monitors:60},
+                  {year:2001, desktops:130, laptops:150, printers:30, monitors:40},
+                  {year:2002, desktops:40, laptops:200, printers:45, monitors:80},
+                  {year:2003, desktops:70, laptops:180, printers:65, monitors:70},
+                  {year:2004, desktops:100, laptops:160, printers:70, monitors:40},
+                  {year:2005, desktops:90, laptops:190, printers:80, monitors:60}]
+
+
+      var width = 600
+      var height = 500
+      var spacing = 60
+
+      // prepare svg
+      var svg = d3.select("body")
+                  .append("svg")
+                  .attr("width", width)
+                  .attr("height",height)
+                  .append("g")
+                  .attr("transform","translate("+spacing/2+ "," + spacing/2+")")
+
+
+      // prepare scales
+      var xScale = d3.scaleLinear()
+                      .domain([d3.min(data, function(d){return d.year}), d3.max(data, function(d){return d.year})])
+                      .range([0, width-spacing])
+
+      var yScale = d3.scaleLinear()
+                      //.domain([0, maxDomain])
+                      .range([height-spacing,0])
+
+
+
+      // define x
+      var xAxis = d3.axisBottom(xScale).ticks(6)
+                    .tickFormat(d3.format("d")) // removes comma in years
+
+
+      //add to svg
+      svg.append("g")
+          .call(xAxis)
+          .attr("transform","translate(0,"+ (height-spacing)+")")
+
+
+
+      // define stack area
+      var stack = d3.stack()
+                    .keys(["desktops","laptops","printers","monitors"])
+
+
+      var colors = ["orange","purple","yellow","green"]
+
+      var stackData = stack(data) // generates stack coordinates as per data for each key
+      yScale.domain([0, d3.max(stackData[stackData.length-1], function(d){return d[1]})])
+      //console.log(stackData)
+      //console.log(stackData[0])// info for desktops
+      //console.log(stackData[3])// info for monitors which will give maximum value for domain
+      //console.log(stackData[stackedData.length-1])
+      //console.log(d3.max(stackData[stackData.length-1], function(d){return d[1]}))
+
+      // define y axis and add to svg
+      var yAxis = d3.axisLeft(yScale)
+      svg.append("g")
+          .call(yAxis)
+
+
+      // define area and display area
+      var area = d3.area()
+                    .x(function(d){ return xScale(d.data.year)}) // year corresponding with xScale
+                    .y0(function(d){return yScale(d[0])})
+                    .y1(function(d){return yScale(d[1])})
+
+
+      // 4 separate g elements for each key
+      var series = svg.selectAll("g.series")
+                      .data(stackData)
+                      .enter()
+                      .append("g")
+                      .attr("class","series")
+
+
+    series.append("path")
+          .style("fill", function(d,i){ return colors[i]})
+          .attr("d", function(d){return area(d)})
+
+
+      </script>
+  </body>
+</html>

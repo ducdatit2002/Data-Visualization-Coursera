@@ -1,0 +1,45 @@
+<html>
+
+<head>
+    <style>
+        button {
+            display: block;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <img id="animalImg" src="dog.jpeg" width="200px" />
+    </div>
+
+    <div id="text" style="font-size:40px">This is an animal.</div>
+
+    <div>
+        <button onclick="change('cat.jpeg')">Show Cat</button>
+        <button onclick="change('dog.jpeg')">Show Dog</button>
+        <button onclick="changeColor()">Change Color</button>
+    </div>
+</body>
+<script src="d3.js"></script>
+<script>
+    function change(imgName) {
+       d3.select("#animalImg")
+        .attr("src", imgName);
+    }
+
+    function changeColor() {
+        let color = d3.select("#text")
+            .style("color");
+        if (color === "red") {
+            d3.select("#text")
+                .style("color", "blue")
+        } else {
+            d3.select("#text")
+                .style("color", "red")
+        }
+    }
+</script>
+
+</html>

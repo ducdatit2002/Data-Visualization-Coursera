@@ -1,0 +1,54 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+
+    <title>Make Me Laugh</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+        #svg
+        {
+            width:350px;
+            height:350px;
+            background:pink;
+        }
+        #face
+        {
+            fill:yellow;
+            stroke:black;
+            stroke-width:4;
+        }
+        .eyes
+        {
+            fill:black;
+        }
+        #mouth
+        {
+            stroke:black;
+            stroke-width:4;
+            fill:none;
+        }
+    </style>
+</head>
+<body>
+    <svg id="svg">
+        <circle cx="150" cy="150" r="120" id="face"></circle>
+        <circle cx="100" cy="120" r="15" class="eyes"></circle>
+        <circle cx="200" cy="120" r="15" class="eyes"></circle>
+        <path id="mouth"></path>
+    </svg>
+    <script>
+          d3.select("#svg > #mouth")
+            .transition()
+            .duration(2000)
+            .attrTween("d", function(){
+            return function(l){return "M 100 200 S 150 " + (l*125 + 125) + " 200 200";};
+
+        })
+
+    </script>
+
+</body>
+
+</html>

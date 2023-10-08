@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Arc Generator</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+    text {
+      font-size: 14px;
+      fill:white;
+    }
+
+    </style>
+  </head>
+  <body>
+      <script>
+          var width = 700;
+          var height = 600;
+          var fullAngle = 2 * Math.PI; // value in radians = 360
+
+          var svg = d3.select("body")
+                      .append("svg")
+                      .attr("height", height)
+                      .attr("width",width)
+                      .style("background","pink")
+
+          var data = [{day: "Mon",startAngle:0, endAngle:1.5},
+                      {day: "Tue",startAngle:1.5, endAngle:3.4},
+                      {day: "Wed",startAngle:3.4, endAngle:4.2},
+                      {day: "Thu",startAngle:4.2, endAngle:5.9},
+                      {day: "Fri",startAngle:5.9, endAngle:6.28}]
+
+
+          var segments = d3.arc()
+                          .innerRadius(25)
+                          .outerRadius(125)
+                          .padAngle(0.05)
+                          .padRadius(50)
+                          .cornerRadius(5)
+
+          var sections = svg.append("g")
+              .attr("transform","translate(300,300)")
+              .selectAll("path")
+              .data(data)
+
+          sections.enter()
+                  .append("path")
+                  .attr("d", segments)
+                  .attr("fill", "gray")
+
+
+          var content = d3.select("g")
+                          .selectAll("text")
+                          .data(data)
+
+
+
+          content.enter()
+                  .append("text")
+                  .each(function(d){ // each of these text elements
+                    var center = segments.centroid(d) // returns x and y coordinates
+                    console.log(center)
+                    d3.select(this) // current text element
+                      .attr("x",center[0])
+                      .attr("y",center[1])
+                      .attr("dx","-10px")
+                      .text(d.day)
+                  })
+
+
+
+
+/*
+        //Arc generator function
+        var circle = d3.arc()
+                        .innerRadius(80)
+                        //.innerRadius(0) // pie
+                        .outerRadius(100)
+                        .startAngle(0)
+                        .endAngle(fullAngle)
+
+      //Arc generator function
+      var halfCircle = d3.arc()
+                      .innerRadius(0)
+                      //.innerRadius(0) // pie
+                      .outerRadius(100)
+                      .startAngle(0)
+                      .endAngle(fullAngle/2)
+
+        // add circle to svg
+        svg.append("g")
+            .attr("transform","translate(200,200)")
+            .append("path")
+            .attr("d", circle)
+            .style("fill","orange")
+
+      // add circle to svg
+      svg.append("g")
+          .attr("transform","translate(400,200)")
+          .append("path")
+          .attr("d", halfCircle)
+          .style("fill","indigo")
+
+*/
+
+
+
+      </script>
+  </body>
+</html>

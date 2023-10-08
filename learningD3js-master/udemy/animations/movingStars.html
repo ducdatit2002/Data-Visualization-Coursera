@@ -1,0 +1,70 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <title>Moving stars</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+    <script>
+    var width = 800, height = 500;
+      function decidePositions(num){
+
+        var arr = [];
+        for(var i=0;i<num;i++){
+          arr.push({
+            initialX:Math.random()*width, // creates number between 0 and 1
+            initialY:Math.random()*height,
+            finalX:Math.random()*width,
+            finalY:Math.random()*height
+          })
+        }
+
+        return arr;
+      }
+
+
+      function movingStars(svg){
+        var stars = d3.symbol()
+                      .type(d3.symbolStar)
+                      .size(500)
+
+        var positions = decidePositions(25) // we want 25 movingStars
+
+        var initialPosition = svg.selectAll("path")
+                                .data(positions)
+
+        initialPosition.enter()
+                      .append("path")
+                      .attr("transform", function(d){
+                        return "translate("+d.initialX+ "," +d.initialY+ ")"
+                      }).attr("d",stars)
+                      .style("fill","white")
+
+
+        d3.selectAll("path")
+          .transition()
+          .ease(d3.easeLinear)// uniform speed
+          .duration(5000)
+          .attr("transform", function(d){
+            return "translate("+d.finalX+ "," +d.finalY+ ")"
+          })
+
+      }
+      // create svg container
+      var svgContainer = d3.select("body")
+                          .append("svg")
+                          .attr("width",width)
+                          .attr("height",height)
+                          .style("background","gray")
+      movingStars(svgContainer)
+      setInterval(function(){movingStars(svgContainer)},5000)
+
+
+
+    </script>
+</body>
+</html>

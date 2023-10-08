@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>D3 - Data with Axes</title>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+    </head>
+  <body>
+      <script>
+            var data = [{"year":2010, "loss":4500},
+                        {"year":2011, "loss":3000},
+                        {"year":2012, "loss":5000},
+                        {"year":2013, "loss":7500},
+                        {"year":2014, "loss":6000}]
+
+            var width = 600;
+            var height = 500;
+            var spacing = 120;
+
+            // prepare svg
+            var svg = d3.select("body")
+                        .append("svg")
+                        .attr("width", width)
+                        .attr("height", height)
+                        .style("background","pink")
+                        //.style("padding",spacing)
+                        .append("g")
+                        .attr("transform","translate("+spacing/2+ ","+ spacing/2+")")
+
+            // defining scales
+            var yScale = d3.scaleLinear()
+                                .domain([2500,8000])
+                                .range([height-spacing,0])
+
+
+            var xScale = d3.scaleLinear()
+                            .domain([d3.min(data, function(d){return d.year}), d3.max(data, function(d){return d.year})])
+                            .range([0,width-spacing])
+
+
+            //define xaxis and y axis
+            var xAxis = d3.axisBottom(xScale).ticks(5)
+                          .tickFormat(function(d){return d})
+            var yAxis = d3.axisLeft(yScale).tickFormat(function(d){return "$"+d})
+
+
+
+            // add x and y axis to svg
+            svg.append("g")
+                .call(xAxis)
+                .attr("transform","translate(30,"+ (height-spacing) +")")
+
+            svg.append("g")
+                .call(yAxis)
+
+            d3.select("g path").remove() // remove x axis path
+
+
+            // data join
+            var rect = svg.selectAll("rect")
+                          .data(data)
+
+            // add vertical bars to svg
+            rect.enter()
+                .append("rect")
+                .attr("width", 30)
+                .attr("height", function(d){return height-spacing- yScale(d.loss)}) // displays bar from bottom to top
+                .attr("x", function(d){return xScale(d.year)+15})
+                .attr("y", function(d){return yScale(d.loss)})
+                .style("fill","indigo")
+
+
+
+      </script>
+  </body>
+</html>

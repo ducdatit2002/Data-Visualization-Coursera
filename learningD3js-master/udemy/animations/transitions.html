@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>D3.js Transition</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+      #square {
+        width:100px;
+        height:100px;
+        background-color: pink;
+        margin:50px;
+      }
+
+      #rectangle {
+        width:300px;
+        height:100px;
+        background-color: silver;
+        margin:50px;
+      }
+
+    </style>
+</head>
+<body>
+  <div id = "square"></div>
+  <div id = "rectangle"></div>
+  <button onclick="changeStyle();">Click me!</button>
+    <script>
+
+      function changeStyle(){
+        d3.selectAll("div")
+          .transition()
+          .delay(1000) // adding a delay | 1 sec = 1000 milliseconds
+          .duration(3000) // in milisecondss
+          .style("background-color","blue")
+
+      }
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Draggable Elements</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+      <style>
+        .changing {
+          fill:white;
+          stroke:black;
+          stroke-width:4px;
+        }
+
+      </style>
+  </head>
+  <body>
+    <script>
+      var width = 800, height = 600;
+      // function to create circles at random positions
+       function decidePositions(n)
+        {
+            var arr = [];
+            for(var i=0; i<n; i++)
+            {
+                arr.push({
+                    x:Math.random()*width,
+                    y:Math.random()*height
+                })
+            }
+            return arr;
+        }
+
+        var svg = d3.select("body")
+                    .append("svg")
+                    .attr("width", width)
+                    .attr("height", height)
+                    .style("background", "pink");
+
+
+        // group circles in a same container
+        var gContainer = svg.append("g")
+
+        var zoom = d3.zoom()
+                    .scaleExtent([1,10]) // radius min  = 20*1
+                    // radius max zoom = 20*10 = 200
+                    .on("zoom",zoomed)
+
+
+        var positions = decidePositions(50)
+
+        // add circles to gContainer instead of svg
+        var circles = gContainer.selectAll("circle")
+                          .data(positions)
+
+        // for each circle to have a different color
+        var colors = d3.scaleOrdinal(d3.schemePaired)
+
+
+        circles.enter()
+                .append("circle")
+                .attr("cx",function(d){return d.x})
+                .attr("cy", function(d){return d.y})
+                .attr("r", 10)
+                .attr("fill", function(d,i){return colors(i)})
+
+
+        // append a rectangle to svg with same height and width as svg
+        var rectangle = svg.append("rect")
+                          .attr("fill", "none")
+                          .attr("width", width)
+                          .attr("height", height)
+                          .attr("pointer-events","all")  // to make this rectangle as target of all mouse events
+                          .call(zoom) // call it on rectangle
+
+
+        function zoomed(){
+
+          // zoom g element as a whole
+          gContainer.attr("transform",d3.event.transform)
+
+        }
+
+
+
+
+
+
+    </script>
+  </body>
+</html>

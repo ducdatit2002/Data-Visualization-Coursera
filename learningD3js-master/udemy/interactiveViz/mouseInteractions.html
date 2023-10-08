@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pie Chart with Legend</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+    .inside {
+      font-size: 25px;
+      fill:white;
+    }
+    .label {
+      font-size: 25px;
+    }
+    .tooltip {
+      position:absolute;
+      background-color: silver;
+      color: white;
+      font-size: 25px;
+      padding: 5px;
+    }
+    </style>
+  </head>
+  <body>
+      <script>
+        var width = 750, height = 500;
+
+        var colorScale = d3.scaleOrdinal(d3.schemeDark2)
+
+        var svg = d3.select("body")
+                    .append("svg")
+                    .attr("height", height)
+                    .attr("width", width)
+                    .style("background","pink")
+
+        var details = [{grade:"A+",number:8},
+                      {grade:"A",number:21},
+                      {grade:"B",number:15},
+                      {grade:"C",number:29},
+                      {grade:"D",number:11},
+                      {grade:"F",number:6}]
+
+        var data = d3.pie().sort(null).value(function(d){return d.number})(details)
+
+        console.log(data)
+
+
+      var segments = d3.arc()
+                        .innerRadius(0)
+                        .outerRadius(200)
+                        .padAngle(0.05)
+                        .padRadius(50)
+
+      var sections = svg.append("g")
+                        .attr("transform","translate(250,250)")
+                        .selectAll("path")
+                        .data(data)
+
+      sections.enter()
+              .append("path")
+              .attr("d",segments)
+              .attr("fill",function(d){return colorScale(d.data.number)})
+              .on("mouseover", function(){
+                d3.select(this) // select the section over which mouse event occured
+                .transition()
+                .duration(300).attr("fill","gray")
+              })
+              .on("mouseout", function(){
+                d3.select(this)
+                .transition()
+                .duration(300).attr("fill",function(d){return colorScale(d.data.number)})
+
+              })
+              .on("mousedown",function(d){
+                var total = d3.sum(details.map(function(d){return d.number}))
+                //console.log(total)
+                var percent = Math.round(10000*d.data.number/total)/100
+                //console.log(percent)
+                var position = d3.mouse(svg.node()) // x and y coordinates of mouse clicked
+
+                d3.select("body")
+                  .append("div")
+                  .classed("tooltip",true)
+                  .style("left",position[0] + 20 +"px") // if mouse position and position of tooltip is same, mouseup event does not get triggered.
+                  // Hence it needs a value to be added to the position. Any value works.
+                  .style("top",position[1]+"px")
+                  .html(d.data.grade + " : " + percent + "%")
+
+              })
+              .on("mouseup",function(){
+                d3.select(".tooltip")
+                  .remove()
+              })
+
+
+      var content = d3.select("g")
+                      .selectAll("text")
+                      .data(data)
+
+      content.enter()
+              .append("text")
+              .classed("inside",true)
+              .each(function(d){
+                var center = segments.centroid(d)
+                d3.select(this)
+                  .attr("x",center[0])
+                  .attr("y", center[1])
+                  .text(d.data.number)
+              })
+
+
+      // generate Legend
+      var legends = svg.append("g")
+                        .attr("transform","translate(500,100)")
+                        .selectAll(".legends")
+                        .data(data)
+      // add smaller g's for legend boxes
+      var legend = legends.enter()
+              .append("g")
+              .attr("class","legends")
+              //.classed("legends",true)
+              .attr("transform",function(d,i){return "translate(0,"+ (i+1)*30 +")"})
+
+      legend.append("rect")
+            .attr("width",20)
+            .attr("height",20)
+            .attr("fill",function(d){return colorScale(d.data.number)})
+
+      legend.append("text")
+            .text(function(d){return d.data.grade})
+            .classed("label",true)
+            .attr("fill", function(d){return colorScale(d.data.number)})
+            .attr("x",30)
+            .attr("y",20)
+
+      </script>
+  </body>
+</html>

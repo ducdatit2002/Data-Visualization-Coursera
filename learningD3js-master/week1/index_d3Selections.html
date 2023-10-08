@@ -1,0 +1,31 @@
+<html>
+
+<head></head>
+
+<body>
+    <div id="page-header">
+        <h1>Hello World!</h1>
+    </div>
+    <p class="main-paragraph">This is an example</p>
+    <p>And this is the second paragraph</p>
+
+</body>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+	/* D3 selectors */
+	let header = d3.select("#page-header")
+	console.log(header.node())
+	let example = d3.select("p.main-paragraph")
+	console.log(example.node())
+	let ps = d3.selectAll("p")
+	console.log(ps.nodes())
+
+	/* D3 API pattern; d3.selection.text and d3.selection.html */
+	/*d3.select("#page-header").html("<b>This is changed content</b>")
+	d3.select("#page-header").text("This is changed content")*/
+	d3.select("#page-header").text("New Header!")
+	/*d3.selectAll("p").html("<b>...</b>")*/
+   
+</script>
+
+</html>

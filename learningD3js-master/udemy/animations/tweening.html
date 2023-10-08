@@ -1,0 +1,45 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <title>Tweening - In between</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+    #content {
+      width: 200px;
+      height: 60px;
+      background-color: gray;
+      color: white;
+      font-size: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    </style>
+</head>
+<body>
+<input type="text" id ="content" value="0" disabled></input><br />
+<button onclick="showNumbers();">Show</button>
+    <script>
+
+      function showNumbers(){
+          d3.select("#content")
+            .transition()
+            .duration(5000)
+            .ease(d3.easeLinear) // to display at uniform speed
+            //.attr("value",100)
+            .attrTween("value",function(){
+              var numbers = d3.interpolateRound(0,100) // to round off integer values
+              return function(i){return numbers(i)}
+            })
+            .styleTween("font-size",function(){
+              var size = d3.interpolateString("20px","60px")
+              return function(i){return size(i)}
+            })
+
+
+      }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <script>
+        var spacing = 80;
+        var width = 700;
+        var height = 600;
+
+        var details = [{"date":"2017-06-30", "tax": 20000},
+                        {"date":"2017-09-30", "tax": 10000},
+                        {"date":"2017-12-31", "tax": 30000},
+                        {"date":"2018-03-31", "tax": 15000}];
+
+        var startDate = d3.min(details, function(d){return new Date(d.date);});
+        var endDate = d3.max(details, function(d){return new Date(d.date);});
+
+        var timeScale = d3.scaleTime()
+                        .domain([startDate, endDate])
+                        .range([0, width-spacing]);
+        var yScale = d3.scaleLinear()
+                        .domain([0, d3.max(details, function(d){return d.tax;})])
+                        .range([0, height-spacing]);
+
+        // create svg
+        var svg = d3.select("body")
+                    .append("svg")
+                    .attr("width", width)
+                    .attr("height", height)
+                    .style("background", "pink");
+
+        //join data
+        var rectangles = svg.selectAll("rect")
+                            .data(details);
+
+
+        // create bars/rectangles
+        rectangles.enter()
+                  .append("rect")
+                  .attr("x", function(d){return 20 + timeScale(new Date(d.date));})
+                  .attr("y", function(d){return height - 40 - yScale(d.tax);})
+                  .attr("width", 25)
+                  .attr("height", function(d){return yScale(d.tax);})
+                  .style("fill", "green");
+
+        var info = svg.selectAll("text")
+                      .data(details)
+
+        info.enter()
+            .append("text")
+            .attr("x", function(d){ return timeScale(new Date(d.date))})
+            .attr("y", function(d){return height-20;})
+            .text(function(d){return d.date})
+            .style("stroke","green")
+
+    </script>
+</body>
+</html>

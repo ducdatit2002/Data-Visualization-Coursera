@@ -1,0 +1,108 @@
+<html>
+
+<head>
+    <style>
+        body {
+            display: flex;
+            padding-left: 20px;
+        }
+
+        #details {
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <svg id="container" height="160" width="110" , style="border: solid 1px #000; margin-top: 10px">
+        <g id="body" style="transform:translate(40px,10px)"></g>
+        <g id="yAxis"></g>
+    </svg>
+    <div id="details">
+        <div style="color: #999">
+            User Details...
+        </div>
+    </div>
+</body>
+<script src="d3.js"></script>
+<script>
+    let body = d3.select("#body")
+    let data = []
+    d3.csv("data.csv").then((d) => {
+        data = d;
+        showData(data)
+    })
+
+    function select(datapoint) {
+
+    }
+
+    function showData(clients) {
+        let max = d3.max(clients, d => +d.Weight)
+        let scale = d3.scaleLinear()
+                    .range([0, 60])
+                    .domain([0, max])
+
+        let scalePosition = d3.scaleBand()
+                            .rangeRound([0, 130])
+                            .domain(clients.map(d => d.Name))
+                            .padding(0.3)
+
+        let join = body.selectAll("rect")
+            .data(clients)
+            .enter()
+            .append("rect")
+            .style("fill", "blue")
+            .style("stroke", "white")
+            .attr("width", d => scale(+d.Weight))
+            .attr("height", scalePosition.bandwidth())
+            .attr("transform", d => `translate(0,${scalePosition(d.Name)})`)
+            .on("click", d => {
+              d3.select("#details").text(d.Name + " : " + d.Weight)
+            }) // Perform event on clicking one of the bars
+            // adding a new listener for hover events
+
+            .on("mouseover", function() { // cannot use '=>'
+              this.style.fill = "red" //this contains the value based on user interaction (click/hover)
+            })
+            .on("mouseout", function(){
+              this.style.fill = "blue"
+            })
+
+        let line = d3.select("#container").append("g")
+            .attr("transform", "translate(0,-10)")
+
+        line = line.append("line")
+            .attr("x1", 0)
+            .attr("x2", 0)
+            .attr("y1", 0)
+            .attr("y2", 200)
+            .attr("stroke", "red")
+            .attr("stroke-width", "3px")
+
+        let yAxis = d3.axisLeft(scalePosition)
+        yAxisContainer = d3.select("#yAxis")
+            .style("transform", "translate(40px, 10px)")
+            .transition()
+            .call(yAxis)
+
+        // In order to enable the red line to move with the mouse -
+        // we need to detect mouse movement anywhere on svg
+        d3.select("#container")
+        .on("mousemove", function() {
+          //let x = d3.event.x // contain all information about the event that happened
+          // gets x position of the mouseout
+          let y = d3.event.y // saves y position of the mouse (will not be used in this code)
+
+          let x = d3.mouse(this)[0] // tells position of mouse relative to this element
+          line.attr("transform",`translate(${x},-10)`)
+
+
+
+        })
+    }
+
+
+</script>
+
+</html>

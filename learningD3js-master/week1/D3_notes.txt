@@ -1,0 +1,22 @@
+#D3 notes
+
+Visualization steps:
+1. Transform Data
+2. Map data to image space
+3. Compute layout
+4. Draw the chart
+
+Each of these steps are executed by D3 APIs
+
+1) Transform Data
+d3.cross (cross multiplication), d3,max
+
+2) Map Data to image Space
+d3.scaleLinear
+
+3) Compute layout
+d3.path, d3.treemap
+
+4) Draw the chart
+d3.select, d3.append
+

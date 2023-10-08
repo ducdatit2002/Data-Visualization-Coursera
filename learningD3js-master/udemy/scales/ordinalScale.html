@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <script>
+        // ordinal scales are used to map discrete input to discrete output
+        var myData = ["a", "b", "c", "d", "e", "f",
+        "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
+        "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+
+        var linearScale = d3.scaleLinear()
+                            .domain([0,25])
+                            .range([0,780])
+
+        var ordinalScale = d3.scaleOrdinal()
+                            .domain(myData)
+                            .range(["red","green","blue","aqua","orange","indigo"])
+
+        // prepare svg
+        var svg = d3.select("body")
+                    .append("svg")
+                    .attr("width", 800)
+                    .attr("height", 50)
+                    .style("background", "pink")
+
+        // data join
+        var letters = svg.selectAll("text")
+                          .data(myData)
+
+        //add shapes/text and styles
+        letters.enter()
+                .append("text")
+                .attr("x", function(d,i){return linearScale(i)+5})
+                .attr("y",40)
+                .text(function(d){return d})
+                .attr("fill", function(d){return ordinalScale(d)})
+
+
+    </script>
+</body>
+</html>

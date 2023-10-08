@@ -1,0 +1,88 @@
+<html>
+
+<head>
+  <h1>Week 3: Cloropleth Map</h1>
+    <style>
+
+
+
+
+    </style>
+</head>
+
+<body>
+    <svg id="container" height="300" width="500">
+        <g id="body" transform="translate(0,0)"></g>
+    </svg>
+</body>
+<script src="d3.js"></script>
+<script>
+    let body = d3.select("#body")
+
+    //Provide an array, promise = asynchronous function to load data and then call function when both data are available
+    Promise.all([
+        d3.csv("dataset.csv"),
+        d3.json("countries.geo.json")
+    ]).then(showData)
+
+
+    function showData(datasources) {
+        let mapInfo = datasources[1]
+        let data = datasources[0]
+        //console.log(data)
+
+        //Iterate through each country's dataset
+        let dataIndex = {}
+        for(let c of data){
+          let country = c.Country;
+          dataIndex[country] = +c.Magnitude
+        }
+        //console.log(dataIndex)
+
+        mapInfo.features = mapInfo.features.map(d => {
+            let country = d.properties.name;
+            let magnitude = dataIndex[country]
+            d.properties.Magnitude = magnitude;
+            return d;
+        })
+        //console.log(mapInfo)
+        let maxEarthquake = d3.max(mapInfo.features, d => d.properties.Magnitude)
+
+        //Computing the median
+        let medianEarthquake = d3.median(mapInfo.features, d => d.properties.Magnitude)
+
+
+        let cScale = d3.scaleLinear()
+                        .domain([0,medianEarthquake, maxEarthquake])
+                      //.domain([0,maxEarthquake])
+                      .range(["white",'orange','red'])
+
+
+        let bodyHeight = 400
+        let bodyWidth = 400
+
+        var projection =
+            d3.geoMercator()
+                .scale(80)
+                .translate([bodyWidth / 2, bodyHeight / 2])
+
+
+        var path = d3.geoPath()
+            .projection(projection);
+
+        body.selectAll("path").data(mapInfo.features)
+            .enter().append("path")
+            .attr("d", d => path(d))
+            .attr("stroke", "black")
+            .attr("fill",
+                d => d.properties.Magnitude ? //missing values should show as white
+                cScale(d.properties.Magnitude): "white"
+                )
+
+
+    }
+
+
+</script>
+
+</html>

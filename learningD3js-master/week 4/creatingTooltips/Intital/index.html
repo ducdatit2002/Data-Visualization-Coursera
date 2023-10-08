@@ -1,0 +1,102 @@
+<html>
+
+<head>
+    <style>
+        body {
+            padding-left: 20px;
+        }
+
+        svg {
+            border: solid 1px #000;
+            margin-top: 10px;
+        }
+
+        #tooltip {
+            border: solid 1px black;
+            padding: 5px;
+            position: absolute;
+            display: none;
+            background-color: white;
+
+        }
+    </style>
+</head>
+
+<body>
+    <svg id="barchart">
+        <g class="body" />
+    </svg>
+
+    <div id="tooltip">Tooltip</div>
+</body>
+<script src="d3.js"></script>
+<script>
+    let barchart = d3.select("#barchart")
+
+    let width = 300;
+    let height = 200;
+
+    barchart.attr("height", height)
+    barchart.attr("width", width)
+
+    d3.csv("data.csv")
+        .then((data) => {
+            data = data.map(d => {
+                d.GDP = +d.GDP
+                return d
+            })
+            drawBarChart(data)
+        })
+
+
+    function showTooltip(text, coords) {
+        d3.select("#tooltip")
+        .text(text)
+        .style("display",'block')
+        .style("top", coords[1] + 10) // y coordinate; show text 10px down from mouse coordinate
+        .style("left", coords[0]) // x coordinate
+
+    }
+
+    function drawBarChart(data) {
+        let margin = { left: 20, bottom: 20, right: 20, top: 20 }
+
+        let bodyWidth = width - margin.left - margin.right;
+        let bodyHeight = height - margin.top - margin.bottom;
+
+        let xScale = d3.scaleBand()
+            .range([0, bodyWidth])
+            .domain(data.map(d => d.Country))
+            .padding(0.2)
+
+        let yScale = d3.scaleLinear()
+            .range([bodyHeight, 0])
+            .domain([0, d3.max(data, d => d.GDP)])
+
+        barChartBody = barchart.select(".body")
+            .attr("transform", `translate(${margin.left},${margin.bottom})`)
+            .selectAll("rect")
+            .data(data)
+
+        barChartBody.enter()
+            .append("rect")
+            .attr("fill", "#556677")
+            .attr("width", xScale.bandwidth())
+            .attr("height", d => bodyHeight - yScale(d.GDP))
+            .attr("y", d => yScale(d.GDP))
+            .attr("x", d => xScale(d.Country))
+            .on("mouseenter", d => {
+                  showTooltip(d.Country, [d3.event.clientX, d3.event.clientY]) // show tooltip next to the mouse
+            }) // add a listener when mouse enters
+            .on("mousemove", d => {
+                  showTooltip(d.Country, [d3.event.clientX, d3.event.clientY]) // show tooltip next to the mouse
+            }) // add a listener when mouse enters
+            .on("mouseleave", d => {
+              d3.select("#tooltip")
+                .style("display",'none')
+            })
+
+    }
+</script>
+
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Draggable Elements</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+      <style>
+        .changing {
+          fill:white;
+          stroke:black;
+          stroke-width:4px;
+        }
+
+      </style>
+  </head>
+  <body>
+    <script>
+      var width = 800, height = 600;
+      // function to create circles at random positions
+       function decidePositions(n)
+        {
+            var arr = [];
+            for(var i=0; i<n; i++)
+            {
+                arr.push({
+                    x:Math.random()*width,
+                    y:Math.random()*height
+                })
+            }
+            return arr;
+        }
+
+        var svg = d3.select("body")
+                    .append("svg")
+                    .attr("width", width)
+                    .attr("height", height)
+                    .style("background", "pink");
+
+        var zoom = d3.zoom()
+                    .scaleExtent([1,5]) // radius min  = 20*1
+                    // radius max zoom = 20*5 = 100
+                    .on("zoom",zoomed)
+
+
+        var positions = decidePositions(25)
+        var circles = svg.selectAll("circle")
+                          .data(positions)
+
+        // for each circle to have a different color
+        var colors = d3.scaleOrdinal(d3.schemePaired)
+
+
+        circles.enter()
+                .append("circle")
+                .attr("cx",function(d){return d.x})
+                .attr("cy", function(d){return d.y})
+                .attr("r", 20)
+                .attr("fill", function(d,i){return colors(i)})
+                .call(zoom)
+
+
+        function zoomed(){
+          d3.select(this)
+            .attr("transform","translate(" + d3.event.transform.x +
+                              "," + d3.event.transform.y + ") scale(" + d3.event.transform.k + ")")
+        }
+
+
+
+
+
+
+    </script>
+  </body>
+</html>

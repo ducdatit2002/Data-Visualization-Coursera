@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Object as Data</title>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
+    <style>
+      p {
+        background: black;
+        color: white;
+        font-size: 30px;
+        width:100px;
+        margin:20px;
+        padding:10px;
+      }
+
+      .person {
+        background: indigo;
+        color: deeppink;
+        font-size: 30px;
+        width:130px;
+        margin:20px;
+        padding:10px;
+      }
+    </style>
+</head>
+<body>
+  <!-- No: of elements == No: of data pts (Update selection)
+    <p>Chair 1</p>
+    <p>Chair 2</p>
+    <p>Chair 3</p>
+    <p>Chair 4</p>
+
+    <script>
+    var myData = ["Person 1", "Person 2", "Person 3", "Person 4"]
+    d3.selectAll("p")
+      .data(myData)
+      .text(function(d){
+        return d;
+      })
+      .classed("person", true);
+      //.data method returns 3 selections = update, enter and exit
+      // when data pts == # of elements; then returns update selection (default)
+    </script> -->
+
+<!-- No: of elements < No: of data pts (Enter selection) -->
+<!-- <p>Chair 1</p>
+    <p>Chair 2</p>
+    <p>Chair 3</p>
+    <p>Chair 4</p>
+
+    <script>
+    var myData = ["Person 1", "Person 2", "Person 3", "Person 4", "Person 5", "Person 6"]
+    var update = d3.selectAll("p")
+                   .data(myData);
+
+      update.enter() //placeholder for additional data pts
+            .append("p");
+
+      update.text(function(d){return d;})
+            .classed("person", true);
+
+    </script> -->
+
+<!-- No: of elements > No: of data pts (Exit selection) -->
+    <p>Chair 1</p>
+    <p>Chair 2</p>
+    <p>Chair 3</p>
+    <p>Chair 4</p>
+
+    <script>
+    var myData = ["Person 1", "Person 2"]
+    var update = d3.selectAll("p")
+      .data(myData);
+
+      update.exit()
+            .remove();
+
+      update.text(function(d){
+        return d;
+      }).classed("person",true);
+
+    </script>
+
+</body>
+</html>

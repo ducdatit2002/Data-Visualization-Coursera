@@ -1,0 +1,46 @@
+<html>
+
+<head>
+  <h1>Week 2: Computing Simple Statistics</h1>
+</head>
+
+<body>
+    <div id="container"></div>
+</body>
+<script src="d3.js"></script>
+<script>
+    let container = d3.select("#container")
+    d3.csv("data.csv").then(showData)
+
+    function write(text) {
+        container.append("div").text(text)
+    }
+
+    function showData(clients) {
+        for (let client of clients) {
+            write(client.Name
+            + ", " + client.Weight)
+        }
+
+        write("-------------")
+        let weightSum = d3.sum(clients, d => {
+          return d.Weight
+        })
+        write("Sum: " + weightSum)
+
+        let weightMean = d3.mean(clients, d => {
+          return d.Weight
+        })
+        write("Mean: " + weightMean)
+
+        let extent = d3.extent(clients, d => {
+          return d.Weight
+        })
+        write("Extent: " + extent)
+
+    }
+
+
+</script>
+
+</html>

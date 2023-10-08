@@ -1,0 +1,48 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <title>Animated Bar Chart</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <script>
+        var svg = d3.select("body")
+                    .append("svg")
+                    .attr("width",600)
+                    .attr("height",500)
+                    .style("background","gray")
+
+        var circle = svg.append("circle")
+                        .attr("cx",50)
+                        .attr("cy",50)
+                        .attr("r",40)
+                        .style("fill","pink")
+
+      function methodChaining(){
+
+        d3.select("circle")
+          .transition()
+          .duration(2000)
+          .attr("cx",500)
+          .attr("cy",400)
+          .transition()
+          .duration(2000)
+          .attr("r",80)
+          .style("fill","deeppink")
+          .transition()
+          .duration(2000)
+          .attr("cx",50)
+          .attr("cy",50)
+          .attr("r",40)
+          .style("fill","pink")
+
+      }
+      methodChaining(); // for function to execute first time without any delay
+      setInterval(methodChaining,6000) //to call function repeatedly in user-specifiedintervals
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<html>
+
+<head>
+  <h1>Week 4: Visualizing networks - Part 1</h1>
+    <style>
+        #container {
+          border: 1px solid black
+        }
+
+        .links line {
+            stroke: black
+        }
+    </style>
+</head>
+
+<body>
+    <svg id="container" height="300" width="500">
+        <g id="body" transform="translate(0,0)"></g>
+    </svg>
+</body>
+<script src="d3.js"></script>
+<script>
+    let body = d3.select("#body")
+
+
+    d3.json("data.json").then(showData)
+
+    function createElements(data){
+      let nodes = body.append("g")
+                      .attr("class","nodes")
+                      .selectAll("cirlces")
+                      .data(data.nodes)
+                      .enter()
+                      .append("circle")
+                        .attr("r",5)
+                        .attr("fill","black")
+
+      let links = body.append("g")
+                      .attr("class","links")
+                      .selectAll("line")
+                      .data(data.links)
+                      .enter()
+                      .append("line")
+
+    }
+
+    function updateElements(){
+      d3.select(".nodes")
+        .selectAll("circle")
+        .attr("cx", d => d.x)
+        .attr("cy", d => d.y)
+
+
+      d3.select(".links")
+        .selectAll("line")
+        .attr("x1", d => d.source.x)
+        .attr("y1", d => d.source.y)
+        .attr("x2", d => d.target.x)
+        .attr("y2", d => d.target.y)
+
+
+    }
+
+
+    function showData(data) {
+        let bodyHeight = 400
+        let bodyWidth = 400
+
+
+    // function call to create elements
+    createElements(data)
+
+    // D3 computes positioning of nodes depending on the node-link information we provide
+    // So as to avoid overlapping links
+    let simulation = d3.forceSimulation()
+                        .force("link", d3.forceLink().id((d) => d.id)) // to pull apart unrelated things and put together things that are related
+// d3.forceLink takes input the node and .id returns node id
+                        .force("charge", d3.forceManyBody()) // simulates elements pulling each other apart
+                        .force("center",d3.forceCenter(bodyWidth/2, bodyHeight/2))
+
+    // Run forces - tell provide nodes and links to simulator
+    simulation.nodes(data.nodes)
+              .on("tick", updateElements) //tick: everytime new info - run this function again
+    simulation.force("link").links(data.links)
+
+
+
+
+    }
+
+
+</script>
+
+</html>

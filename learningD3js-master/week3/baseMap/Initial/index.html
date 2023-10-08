@@ -1,0 +1,52 @@
+<html>
+
+<head>
+  <h1>Week 3: Drawing base of a map</h1>
+  <style>
+    svg{
+      border: 1px solid black
+    }
+  </style>
+
+</head>
+
+<body>
+    <svg id="container" height="300" width="500">
+        <g id="body" transform="translate(0,0)"></g>
+    </svg>
+</body>
+<script src="d3.js"></script>
+<script>
+    let body = d3.select("#body")
+    d3.json("countries.geo.json").then(showData)
+
+    function showData(mapInfo) {
+        let bodyHeight = 400
+        let bodyWidth = 400
+
+        //console.log(mapInfo)
+        // 1. projection: converts lati/longitude information to graphical interface
+        let projection = d3.geoNaturalEarth1() // creates projection
+                          .scale(80) // scaling map/size
+                          .translate([bodyWidth/2,bodyHeight/2])
+        // 2. path generator
+        let path = d3.geoPath()// converts project into path information to draw
+                      .projection(projection)
+
+
+        // 3. Draw the map
+        body.selectAll("path")
+            .data(mapInfo.features)
+            .enter()
+            .append("path")//append a new path everytime we get a new country
+            .attr("d",path)
+            .attr("stroke","black")
+            .attr("fill","none")
+
+
+    }
+
+
+</script>
+
+</html>

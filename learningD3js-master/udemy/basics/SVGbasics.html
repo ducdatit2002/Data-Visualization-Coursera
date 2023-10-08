@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>SVG Introduction</title>
+    <style>
+      svg {
+        background-color: pink;
+      }
+      line {
+        stroke: red;
+        stroke-width:5px;
+      }
+      rect, circle {
+        fill: white;
+        stroke: green;
+        fill-opacity: 0.5;
+      }
+      text {
+        fill: purple;
+      }
+    </style>
+</head>
+<body>
+    <svg width="600" height="600">
+        <line x1="0" y1="0" x2="100" y2="100" />
+        <rect x="120" y="120" width="100" height="50"></rect>
+        <circle cx="350" cy="150" r="50"></circle>
+        <ellipse cx="350" cy="350" rx="100" ry="50"></ellipse>
+        <text x="100" y="20">SVG Basics</text>
+    </svg>
+</body>
+</html>

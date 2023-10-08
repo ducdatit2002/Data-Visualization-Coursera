@@ -1,0 +1,37 @@
+<html>
+
+<head>
+  <h1>Week 2: Filtering and Sorting</h1>
+</head>
+
+<body>
+    <div id="container"></div>
+</body>
+<script src="d3.js"></script>
+<script>
+    let container = d3.select("#container")
+    d3.csv("data.csv").then(function(data){
+        data.sort((a,b) => {
+            return d3.ascending(a.Name, b.Name)
+        })
+        data = data.filter(d => {
+          return d.Weight < 200
+        })
+        showData(data)
+    })
+
+    function showData(clients) {
+        for (let client of clients) {
+            write(client.Name
+            + ", "
+            + client.Weight)
+        }
+    }
+    function write(text) {
+        container.append("div").text(text)
+    }
+
+
+</script>
+
+</html>

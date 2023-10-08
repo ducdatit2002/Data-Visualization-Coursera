@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Selection</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <div id="container">
+        <span>First Span</span>
+        <p>First Paragraph</p>
+        <p>Second Paragraph</p>
+        <p>Third Paragraph</p>
+        <span>Second Span</span>
+        <p>This is about <span id="inside">Selections</span></p>
+    </div>
+    <script>
+        //sd3.select("div").style("background", "pink");
+        //d3.select("p").style("color", "red");
+        //d3.selectAll("p").style("color", "red");
+        //d3.select("#container").style("background", "pink");
+         d3.select("#inside").style("background", "pink");
+    </script>
+</body>
+</html>

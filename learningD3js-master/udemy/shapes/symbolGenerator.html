@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Symbol Generator</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+  </head>
+  <body>
+      <script>
+
+          var width = 600
+          var height = 500
+
+          var svg = d3.select("body")
+                      .append("svg")
+                      .attr("width", width)
+                      .attr("height", height)
+                      .style("background","pink")
+
+          var stars = d3.symbol()
+                        .type(d3.symbolStar) //type of symbol
+                        //.type(d3.symbolWye)
+                        .size(100)
+
+          var positions = [[50,180], [400,250],[250,400],[150,320],[300,90],[420,300]];
+
+          var items = svg.selectAll("path")
+              .data(positions)
+
+          items.enter()
+                .append("path")
+                .attr("transform", function(d){return "translate("+d[0]+","+d[1]+")"})
+                .attr("d",stars)
+                .style("fill","deeppink")
+
+      </script>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <title>Animated Bar Chart</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+      div {
+        height:25px;
+        margin:10px;
+        background:pink;
+        color:red;
+        text-align:center;
+        line-height:25px;
+      }
+    </style>
+</head>
+<body>
+<button onclick=animateChart();>Animate</button>
+    <script>
+    function animateChart(){
+      var numbers = [31,25,35,18,9,14]
+
+      var bars = d3.select("body")
+                    .selectAll("div")
+                    .data(numbers)
+      bars.enter()
+          .append("div")
+          .style("width","5px") //initial width
+          .style("opacity",0) //initial opacity
+          .transition()
+          .delay(function(d,i){return i*1000}) //to display one by one
+          .duration(1000)
+          .style("width",function(d){return d*10 + "px"})
+          .style("opacity",1)
+          .text(function(d){return d})
+
+      }
+
+    </script>
+</body>
+</html>

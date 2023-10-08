@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <script>
+        var width=800;
+        var height=400;
+        var radius = 50;
+
+        var myData = d3.range(0,110,1)
+        var linearScale = d3.scaleLinear()
+                            .domain([0,100])
+                            .range([0,width-200])
+
+
+        var colorScale = d3.scaleSequential(d3.interpolate("deeppink","indigo"))
+                            .domain([0,100])
+                            //.interpolator(d3.interpolate("deeppink","indigo"))
+                            //.interpolator(d3.interpolateRainbow)
+
+        var svg = d3.select("body")
+                    .append("svg")
+                    .attr("width", width)
+                    .attr("height", height)
+                    .style("background","pink")
+
+        var circles = svg.selectAll("circles")
+                          .data(myData)
+
+        circles.enter()
+                .append("circle")
+                .attr("cx", function(d){return 80 + linearScale(d)})
+                .attr("cy", 100)
+                .attr("r", radius)
+                .style("fill", function(d){return colorScale(d)})
+
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+#CSS notes
+
+CSS goes in the <head><</head> section of the HTML document within <style></style> tags
+
+OR ---
+
+can mention a css file in the head like this:
+<link rel = 'stylesheet' href='style.css' /> 
+
+1. tag selectors
+- use name of tag 
+- for eg: 
+HTML: <img src='logo.jpg'/>
+CSS: img {...}
+
+2. class selector
+- use name of class
+
+HTML: <p class = 'withborder'>...</p>
+CSS: .withborder {...}
+
+
+3. ID selector
+HTML: <h1 id = 'page-title'>..</h1>
+CSS: #page-title {...}
+
+
+- difference between id and class is id has to be specific for every element whereas multiple elements can have the same class
+
+4. pseudo selector
+HTML: <button>OK</button>
+CSS: button:hover {...}
+-Select elements based on certain state

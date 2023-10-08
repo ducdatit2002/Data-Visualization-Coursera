@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <script>
+        var quantizeData = [1, 21, 26, 39, 51, 57, 63, 79, 82, 99];// based on values
+        var quantileData = [100, 220, 2650, 39689, 51485, 576892, 633402, 7965320, 8269467, 99568235]; // based on position
+        var thresholdData = [-67, 2, 9, 125, 550, 6200, 9853, 13678, 5862303, 96587983]; // define thresholds upto which values fall into a bucket
+
+        // quantize scale: discrete output for continous input ----------
+        var outputRange = ["red", "green", "deeppink", "blue", "yellow"]
+        var quantizeScale = d3.scaleQuantize()
+                              .domain([0,100])
+                              .range(outputRange)
+
+        // quantile scale: discrete output for continous input -------
+        var quantileScale = d3.scaleQuantile()
+                              .domain(quantileData)
+                              .range(outputRange)
+
+        // Threshold scale: discrete output for continous input -------
+        var thresholdScale = d3.scaleThreshold()
+                                .domain([0,10,1000,100000,10000000]) // define threshold
+                                . range(outputRange)
+
+        //prepare svg
+        var svg = d3.select("body")
+                    .append("svg")
+                    .attr("width", 500)
+                    .attr("height", 200)
+                    .style("background","pink")
+
+        // join data
+        var circles = svg.selectAll("circle")
+
+        //add shapes and style
+        circles.data(quantizeData).enter()
+                .append("circle")
+                .attr("r",20)
+                .attr("cx",function(d, i){return 45*(i+1)})
+                .attr("cy",40)
+                .attr("fill", function(d){return quantizeScale(d)})
+
+        //add shapes and style
+        circles.data(quantileData).enter()
+                .append("circle")
+                .attr("r",20)
+                .attr("cx",function(d, i){return 45*(i+1)})
+                .attr("cy",100)
+                .attr("fill", function(d){return quantileScale(d)})
+
+        //add shapes and style
+        circles.data(thresholdData).enter()
+                .append("circle")
+                .attr("r",20)
+                .attr("cx",function(d, i){return 45*(i+1)})
+                .attr("cy",150)
+                .attr("fill", function(d){return thresholdScale(d)})
+
+    </script>
+</body>
+</html>

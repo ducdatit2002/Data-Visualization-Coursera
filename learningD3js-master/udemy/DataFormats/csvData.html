@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Read data from external data file</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+      <style>
+        .bars {
+          height:30px;
+          line-height: 30px;
+          background:pink;
+          margin:10px;
+          color:red;
+          text-align: center;
+        }
+
+        .names {
+          height: 30px;
+          line-height: 30px;
+          margin: 10px;
+          color: red;
+        }
+      </style>
+  </head>
+  <body>
+    <script>
+
+        // read data
+        d3.csv('details.csv').then(function(data){
+          //console.log(data)
+
+          var bars = d3.select("body")
+                      .selectAll("div")
+                      .data(data)
+
+          bars.enter()
+              .append("div")
+              .classed("bars",true)
+              .style("width", function(d){return (d.Age*10) + "px"})
+              .text(function(d){return d.Age})
+
+          bars.enter()
+              .append("div")
+              .classed("names",true)
+              .style("left", function(d){return (d.Age*10)+15 + "px"})
+              .style("top", function(d,i){return (40*i) + "px"})
+              .text(function(d){return d.Name})
+
+
+        })
+    </script>
+  </body>
+</html>

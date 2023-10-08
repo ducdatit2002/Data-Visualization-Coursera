@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hands-On Practice - Axes</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+      <style>
+        div
+          {
+              margin:5px;
+          }
+      </style>
+  </head>
+  <body>
+      <div>
+      <label for="x">Horizontal: </label>
+      <select id="x" onchange="displayAxis();">
+            <option value="select">Select</option>
+            <option value="top">Top</option>
+            <option value="bottom">Bottom</option>
+      </select>
+      <label for="y">Vertical: </label>
+      <select id="y" onchange="displayAxis();">
+            <option value="select">Select</option>
+            <option value="left">Left</option>
+            <option value="right">Right</option>
+      </select>
+     </div>
+      <script>
+            var width = 500; var height = 500;var spacing = 60;
+            var svg = d3.select("body").append("svg")
+                .attr("width", width).attr("height", height)
+                .style("background", "pink")
+                .append("g").classed("main", true)
+                .attr("transform", "translate(" + spacing/2 + "," + spacing/2 + ")");
+
+           function displayAxis()
+            {
+               var direction = document.getElementById(event.target.id).value;
+                d3.select("g:not(.main)").remove();
+                var scale = d3.scaleLinear()
+                                .domain([0, 600])
+                                .range([0, width-spacing]);
+                var ourAxis = "";var distance = 0;
+                if(direction == "select")
+                    {
+                        d3.select("g:not(.main)").remove();
+                    }
+                else if(direction == "top")
+                    {
+                        ourAxis = d3.axisTop(scale);
+                    }
+                else if(direction == "bottom")
+                    {
+                        ourAxis = d3.axisBottom(scale);
+                        distance = height-spacing;
+                    }
+                else if(direction == "left")
+                    {
+                        ourAxis = d3.axisLeft(scale);
+                    }
+                else
+                    {
+                        ourAxis = d3.axisRight(scale);
+                        distance = width-spacing;
+                    }
+                svg.append("g").attr("transform", function(){
+                    if(direction == "top" || direction == "bottom")
+                        return "translate(0," + distance + ")";
+                    else
+                        return "translate(" + distance + ", 0)";
+                }).call(ourAxis);
+            }
+      </script>
+  </body>
+</html>

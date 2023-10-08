@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Selectors</title>
+    <style>
+        div
+        {
+            border:2px solid red;
+            margin: 20px;
+            padding:10px;
+        } /*
+        p:first-child
+        {
+          background-color:teal;
+        }
+        p:last-child
+        {
+          background-color: pink;
+        }
+        #parent3 > ol
+        {
+          color: blue;
+        }
+        #parent2 > span
+        {
+          color: magenta;
+        }
+        #parent3 li
+        {
+          color: yellow;
+        }*/
+        ol > li
+        {
+          color: orange;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="parent1" class="parent">
+        <p>First Paragraph</p>
+        <span>First Span</span>
+        <p>Second Paragraph</p>
+        <p>Third Paragraph</p>
+        <p>Fourth Paragraph</p>
+        <span>Second Span</span>
+    </div>
+    <div id="parent2" class="parent">
+        <span>First Span</span>
+        <p>First Paragraph</p>
+        <p>Second Paragraph</p>
+        <span>Second Span</span>
+        <p>Third Paragraph</p>
+    </div>
+    <div id="parent3">
+        <ol>
+            <li>One</li>
+            <li>Two</li>
+            <li>Three</li>
+            <li>Four</li>
+        </ol>
+    </div>
+</body>
+</html>

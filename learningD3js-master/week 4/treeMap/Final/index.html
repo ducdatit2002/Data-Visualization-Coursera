@@ -1,0 +1,40 @@
+<html>
+
+<head>
+    <style>
+        .links line {
+            stroke: black
+        }
+    </style>
+</head>
+
+<body>
+    <svg id="container" height="300" width="500">
+        <g id="body" transform="translate(0,0)"></g>
+    </svg>
+</body>
+<script src="d3.js"></script>
+<script>
+    let body = d3.select("#body")
+
+    
+    d3.json("data.json").then(showData)
+    
+    function showData(data) {
+        let bodyHeight = 300
+        let bodyWidth = 500
+        
+        let treemap = d3.treemap()
+            .size([bodyWidth, bodyHeight])
+
+        let root = d3.hierarchy(data)
+            .sum(d => d.sales)
+
+        console.log(treemap(root));
+
+    }
+
+
+</script>
+
+</html>
